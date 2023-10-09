@@ -1,8 +1,10 @@
 library flutter_bluetooth_printer;
 
 import 'dart:async';
+import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
