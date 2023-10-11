@@ -122,44 +122,43 @@ class FlutterBluetoothPrinter {
   }
 
   static Future<List<int>> _blackwhiteInternal(Map<String, dynamic> arg) async {
-    final srcBytes = arg['src'] as ByteBuffer;
+    final srcBytes = arg['src'] as List<int>;
     final width = arg['width'] as int;
     final height = arg['height'] as int;
     final paperSize = arg['paperSize'] as PaperSize;
 
-    img.Image src =
-    img.Image.fromBytes(width: width, height: height, bytes: srcBytes);
+    img.Image src = img.Image.fromBytes(width, height, srcBytes);
     final w = src.width;
     final h = src.height;
 
-    src = img.smooth(src, weight: 1.5);
-    final res = img.Image(width: w, height: h);
+    src = img.smooth(src, 1.5);
+    final res = img.Image(w, h);
     for (int y = 0; y < h; ++y) {
       for (int x = 0; x < w; ++x) {
         final idx = y * w + x;
 
-        final pixel = src.backgroundColor!;
-        final r = img.getLuminance(pixel);
-        final b = img.getLuminance(pixel);
-        final g = img.getLuminance(pixel);
+        final pixel = src[idx];
+        final r = img.getRed(pixel);
+        final b = img.getBlue(pixel);
+        final g = img.getGreen(pixel);
 
-        num c;
+        int c;
         final l = img.getLuminanceRgb(r, g, b) / 255;
         if (l > 0.8) {
-          c = img.getLuminanceRgb(255, 255, 255);
+          c = img.getColor(255, 255, 255);
         } else {
-          c = img.getLuminanceRgb(0, 0, 0);
+          c = img.getColor(0, 0, 0);
         }
 
         final u = BigInt.from(c).toUnsigned(32);
-        res.frameIndex = u.toInt();
+        res[idx] = u.toInt();
       }
     }
 
     src = res;
     src = img.pixelate(
       src,
-      size: (src.width / paperSize.width).round(),
+      (src.width / paperSize.width).round(),
       mode: img.PixelateMode.average,
     );
 

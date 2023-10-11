@@ -165,6 +165,10 @@ class _ReceiptPageState extends State<ReceiptPage> {
                           value: PaperSize.mm58,
                         ),
                         const PopupMenuItem(
+                          child: Text('72mm',),
+                          value: PaperSize.mm72,
+                        ),
+                        const PopupMenuItem(
                           child: Text('80mm'),
                           value: PaperSize.mm80,
                         ),
